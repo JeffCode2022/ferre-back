@@ -863,7 +863,6 @@ module.exports = {
     obtener_producto_admin,
     listar_etiquetas_producto_admin,
     eliminar_etiqueta_producto_admin,
-    eliminar_producto_admin,
     agregar_etiqueta_producto_admin,
     obtener_portada,
     actualizar_producto_admin,
