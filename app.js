@@ -1,5 +1,5 @@
 'use strict'
-require('dotenv').config();
+
 var express = require('express');
 var bodyparser = require('body-parser');
 var mongoose = require('mongoose');
@@ -31,19 +31,19 @@ var cliente_routes = require('./routes/cliente');
 var admin_routes = require('./routes/admin');
 var cupon_routes = require('./routes/cupon');
 
-// Conexión a MongoDB Atlas
-const connectDB = async () => {
-    try {
-      await mongoose.connect(process.env.MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-      console.log('Conexión a MongoDB Atlas exitosa');
-    } catch (error) {
-      console.error('Error en la conexión a MongoDB Atlas:', error);
-      process.exit(1); // Termina el proceso si la conexión falla
+mongoose.connect('mongodb://127.0.0.1:27017/ferre_db',{useUnifiedTopology: true, useNewUrlParser: true}, (err,res)=>{
+    if(err){  
+        throw err;
+        console.log(err);
+    }else{
+        console.log("Corriendo....");
+        server.listen(port, function(){
+            console.log("Servidor " + port );
+        });
+
     }
-  };
+});
+
 app.use(bodyparser.urlencoded({limit: '50mb',extended:true}));
 app.use(bodyparser.json({limit: '50mb', extended: true}));
 
@@ -59,15 +59,5 @@ app.use((req,res,next)=>{
 app.use('/api',cliente_routes);
 app.use('/api',admin_routes);
 app.use('/api',cupon_routes);
-
-// Iniciar el servidor
-const startServer = async () => {
-    await connectDB();
-    server.listen(port, () => {
-      console.log(`Servidor corriendo en el puerto ${port}`);
-    });
-  };
-
-startServer();
 
 module.exports = app;
