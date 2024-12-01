@@ -173,18 +173,6 @@ listar_productos_admin = async function(req,res){
     } 
 }
 
-eliminar_producto_admin = async function (req, res) {
-    if (req.user) {
-       
-            var id = req.params['id'];
-            let reg = await Producto.findByIdAndRemove({ _id: id });
-            res.status(200).send({ data: reg })
-
-       
-    } else {
-        res.status(500).send({ message: 'NoAccess' });
-    }
-}
 
 listar_variedades_productos_admin = async function(req,res){
     if(req.user){
