@@ -358,8 +358,8 @@ const enviar_email_pedido_compra = async function(venta){
             service: 'gmail',
             host: 'smtp.gmail.com',
             auth: {
-                user: 'diegoalonssoac@gmail.com',
-                pass: 'dcmplvjviofjojgf'
+                user: 'jchungazap@gmail.com',
+                pass: 'adxkmfhbexbyzuxa'
             }
         }));
     
@@ -376,9 +376,9 @@ const enviar_email_pedido_compra = async function(venta){
             var htmlToSend = template({op:true});
     
             var mailOptions = {
-                from: 'diegoalonssoac@gmail.com',
+                from: 'jchungazap@gmail.com',
                 to: orden.cliente.email,
-                subject: 'Gracias por tu orden, Prágol.',
+                subject: 'Gracias por tu orden, Constructor👷.',
                 html: htmlToSend
             };
           
@@ -558,8 +558,8 @@ const enviar_orden_compra = async function(venta){
             service: 'gmail',
             host: 'smtp.gmail.com',
             auth: {
-                user: 'diegoalonssoac@gmail.com',
-                pass: 'dcmplvjviofjojgf'
+                user: 'jchungazap@gmail.com',
+                pass: 'adxkmfhbexbyzuxa'
             }
         }));
     
@@ -576,7 +576,7 @@ const enviar_orden_compra = async function(venta){
             var htmlToSend = template({op:true});
     
             var mailOptions = {
-                from: 'diegoalonssoac@gmail.com',
+                from: 'jchungazap@gmail.com',
                 to: orden.cliente.email,
                 subject: 'Confirmación de compra ' + orden._id,
                 html: htmlToSend

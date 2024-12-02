@@ -545,8 +545,8 @@ const enviar_email_pedido_compra = async function(venta){
             service: 'gmail',
             host: 'smtp.gmail.com',
             auth: {
-                user: 'diegoalonssoac@gmail.com',
-                pass: 'dcmplvjviofjojgf'
+                user: 'jchungazap@gmail.com',
+                pass: 'adxkmfhbexbyzuxa'
             }
         }));
     
@@ -563,9 +563,9 @@ const enviar_email_pedido_compra = async function(venta){
             var htmlToSend = template({op:true});
     
             var mailOptions = {
-                from: 'diegoalonssoac@gmail.com',
+                from: 'jchungazap@gmail.com',
                 to: orden.cliente.email,
-                subject: 'Gracias por tu orden, Prágol.',
+                subject: 'Gracias por tu orden, Constructor👷.',
                 html: htmlToSend
             };
           
@@ -666,40 +666,54 @@ const marcar_envio_orden = async function(req,res){
     }
 }
 
-const confirmar_pago_orden = async function(req,res){
-    if(req.user){
-
+const confirmar_pago_orden = async function(req, res) {
+    if (req.user) {
         var id = req.params['id'];
         let data = req.body;
 
-        var venta = await Venta.findByIdAndUpdate({_id:id},{
-            estado: 'Procesando'
-        });
-
-        var detalles = await Dventa.find({venta:id});
-        for(var element of detalles){
-            let element_producto = await Producto.findById({_id:element.producto});
-            let new_stock = element_producto.stock - element.cantidad;
-            let new_ventas = element_producto.nventas + 1;
-
-            let element_variedad = await Variedad.findById({_id:element.variedad});
-            let new_stock_variedad = element_variedad.stock - element.cantidad;
-
-            await Producto.findByIdAndUpdate({_id: element.producto},{
-                stock: new_stock,
-                nventas: new_ventas
+        try {
+            // Actualiza el estado de la venta a "Procesando"
+            var venta = await Venta.findByIdAndUpdate({_id: id}, {
+                estado: 'Procesando'
             });
 
-            await Variedad.findByIdAndUpdate({_id: element.variedad},{
-                stock: new_stock_variedad,
-            });
+            var detalles = await Dventa.find({venta: id});
+
+            // Actualiza el stock de los productos y variedades
+            for (var element of detalles) {
+                let element_producto = await Producto.findById({_id: element.producto});
+                let new_stock = element_producto.stock - element.cantidad;
+                let new_ventas = element_producto.nventas + 1;
+
+                let element_variedad = await Variedad.findById({_id: element.variedad});
+                let new_stock_variedad = element_variedad.stock - element.cantidad;
+
+                // Actualiza la información del producto y variedad
+                await Producto.findByIdAndUpdate({_id: element.producto}, {
+                    stock: new_stock,
+                    nventas: new_ventas
+                });
+
+                await Variedad.findByIdAndUpdate({_id: element.variedad}, {
+                    stock: new_stock_variedad,
+                });
+            }
+
+            // Llamamos a la función para enviar el correo de confirmación
+            await enviar_orden_compra(venta._id);  // Pasamos el ID de la venta para que la función lo maneje correctamente
+
+            // Responde con la información de la venta
+            res.status(200).send({ data: venta });
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ message: 'Error al procesar la orden.' });
         }
-
-        res.status(200).send({data:venta});
-    }else{
-        res.status(500).send({message: 'NoAccess'});
+    } else {
+        res.status(500).send({ message: 'NoAccess' });
     }
 }
+
 
 
 const mail_confirmar_envio = async function(venta){
@@ -720,8 +734,8 @@ const mail_confirmar_envio = async function(venta){
             service: 'gmail',
             host: 'smtp.gmail.com',
             auth: {
-                user: 'diegoalonssoac@gmail.com',
-                pass: 'dcmplvjviofjojgf'
+                user: 'jchungazap@gmail.com',
+                pass: 'adxkmfhbexbyzuxa'
             }
         }));
     
@@ -738,7 +752,7 @@ const mail_confirmar_envio = async function(venta){
             var htmlToSend = template({op:true});
     
             var mailOptions = {
-                from: 'diegoalonssoac@gmail.com',
+                from: 'jchungazap@gmail.com',
                 to: orden.cliente.email,
                 subject: 'Tu pedido ' + orden._id + ' fué enviado',
                 html: htmlToSend
@@ -816,8 +830,8 @@ const enviar_orden_compra = async function(venta){
             service: 'gmail',
             host: 'smtp.gmail.com',
             auth: {
-                user: 'diegoalonssoac@gmail.com',
-                pass: 'dcmplvjviofjojgf'
+                user: 'jchungazap@gmail.com',
+                pass: 'adxkmfhbexbyzuxa'
             }
         }));
     
@@ -834,7 +848,7 @@ const enviar_orden_compra = async function(venta){
             var htmlToSend = template({op:true});
     
             var mailOptions = {
-                from: 'diegoalonssoac@gmail.com',
+                from: 'jchungazap@gmail.com',
                 to: orden.cliente.email,
                 subject: 'Confirmación de compra ' + orden._id,
                 html: htmlToSend
